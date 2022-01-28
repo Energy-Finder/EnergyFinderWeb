@@ -16,11 +16,11 @@ function Home() {
         if(!token) {
            logout();
         } else {
-            setUserName(userData.userName)
+            setUserName(userData.userName);
         }
     }
 
-    function logout() {
+    const logout = function () {
         localStorage.removeItem('@dataUser');
         localStorage.removeItem('token');
         navigate('/');
@@ -38,7 +38,6 @@ function Home() {
                     <p className="username-label">Olá {userName}!</p>
                     <img src={logoutIcon} onClick={() => logout()} />
                 </div>
-
             </header>
 
             <section className="home-container">
