@@ -1,12 +1,3 @@
-body {
-    font-size: 50%;
-    font-family: 'Nunito', sans-serif;
-}
-
-span {
-    color: #FF7700;
-}
-
 section {
     display: flex;
     width: 100%;
@@ -81,29 +72,8 @@ section .form-side .form .inputs p:last-child{
     cursor: pointer;
 }
 
-section .form-side .form .inputs input, button {
-    width: 100%;
-    height: 55px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    padding-left: 20px;
-    box-sizing: border-box;
-    font-size: 3ch;
-}
-
 section .form-side .form .inputs button {
     height: 60px;
     margin-top: 5px;
-    background-color: var(--orange);
     font-size: 3.3ch;
-    color: var(--white);
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-section .form-side .form .inputs button:hover {
-    background-color: var(--secondary-orange);
-    transition: 0.2s;
 }
