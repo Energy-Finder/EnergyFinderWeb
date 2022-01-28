@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700&display=swap');
+@import url('http://fonts.cdnfonts.com/css/northland-script');
+
+:root {
+    --white: #EEEEEE;
+    --gray: #222222;
+    --orange: #FF7700;
+    --secondary-orange: #D16100;
+}
+
+* {
+    margin: 0;
+    user-select: none;
+}
