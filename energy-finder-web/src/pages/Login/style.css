@@ -26,7 +26,7 @@ section .canva-side {
 }
 
 section .canva-side p {
-    font-size: 8ch;
+    font-size: 7ch;
     color: var(--white);
 }
 
@@ -64,7 +64,7 @@ section .form-side .form .inputs {
     display: flex;
     width: 100%;
     flex-direction: column;
-    margin-top: -45px;
+    margin-top: -50px;
 }
 
 section .form-side .form .inputs p{
