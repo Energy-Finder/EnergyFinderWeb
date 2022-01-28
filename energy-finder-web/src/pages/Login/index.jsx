@@ -14,6 +14,7 @@ function Login() {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
         if (isRegister) {
@@ -27,12 +28,23 @@ function Login() {
         }
     }, [isRegister]);
 
+    
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
+    const checkAuth = function () {
+        if(token) {
+           navigate('/home');
+        }
+    }
+
     const auth = async function (event) {
         event.preventDefault();
         try {
             const { data } = await api.get(`/user/auth/${userEmail}/${userPassword}`);
             if (data.auth) {
-                localStorage.setItem('@dataUser', JSON.stringify(data.data));
+                localStorage.setItem('@dataUser', JSON.stringify(data.data[0]));
                 localStorage.setItem('token', data.token);
                 navigate('/home');
             } else {

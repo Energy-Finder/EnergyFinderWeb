@@ -1,17 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import searchIcon from '../../imgs/icons/search-solid.png';
 import logoutIcon from '../../imgs/icons/log-out.svg';
 import '../global.css';
 import './style.css';
 
 function Home() {
+    const navigate = useNavigate();
+    const userData = JSON.parse(localStorage.getItem('@dataUser')); 
+
+    const [userName, setUserName] = useState('');
+    const [token, setToken] = useState(localStorage.getItem('token'));
+
+    const checkAuth = function () {
+        if(!token) {
+           logout();
+        } else {
+            setUserName(userData.userName)
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('@dataUser');
+        localStorage.removeItem('token');
+        navigate('/');
+    }
+
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
     return (
         <section className="home-body">
             <header>
                 <p className="brand"><span>E</span>nergy <span>F</span>inder</p>
                 <div className="username-div">
-                    <p className="username-label">Olá usuário!</p>
-                    <img src={logoutIcon} />
+                    <p className="username-label">Olá {userName}!</p>
+                    <img src={logoutIcon} onClick={() => logout()} />
                 </div>
 
             </header>
