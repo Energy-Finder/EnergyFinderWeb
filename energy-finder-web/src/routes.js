@@ -1,4 +1,5 @@
 import Login from './pages/Login/index';
+import Home from './pages/Home/index';
 
 import {
   BrowserRouter,
@@ -12,8 +13,9 @@ function AppRoutes() {
       <Routes>
         <Route path='/' exact element={<Login />} />
       </Routes>
-
-
+      <Routes>
+        <Route path='/home' element={<Home />} />
+      </Routes>
     </BrowserRouter>
   );
 }
