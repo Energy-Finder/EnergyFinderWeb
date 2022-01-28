@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import './style.css';
 import '../global.css';
 import api from "../../utils/api";
 
 function Login() {
+    const navigate = useNavigate();
     const [isRegister, setIsRegister] = useState(false);
     const [loginOrRegisterLabel, setLoginOrRegisterLabel] = useState('Realizar Login');
     const [loginOrRegisterBtn, setLoginOrRegisterBtn] = useState('Entrar');
@@ -29,11 +31,10 @@ function Login() {
         event.preventDefault();
         try {
             const { data } = await api.get(`/user/auth/${userEmail}/${userPassword}`);
-
             if (data.auth) {
-                localStorage.setItem('@dataUser', JSON.stringify(data));
-                console.log(data);
-                alert('logado!');
+                localStorage.setItem('@dataUser', JSON.stringify(data.data));
+                localStorage.setItem('token', data.token);
+                navigate('/home');
             } else {
                 alert('Erro na autenticação');
             }
