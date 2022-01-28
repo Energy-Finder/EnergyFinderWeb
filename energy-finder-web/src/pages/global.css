@@ -16,6 +16,7 @@
 body {
     font-size: 45%;
     font-family: 'Nunito', sans-serif;
+    animation: fade-in 1s;
 }
 
 span {
@@ -46,3 +47,12 @@ button:hover {
     background-color: var(--secondary-orange);
     transition: 0.2s;
 }
+
+@keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;;
+    }
+  }
