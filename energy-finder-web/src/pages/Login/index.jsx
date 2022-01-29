@@ -15,6 +15,7 @@ function Login() {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [token, setToken] = useState(localStorage.getItem('token'));
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (isRegister) {
@@ -28,19 +29,20 @@ function Login() {
         }
     }, [isRegister]);
 
-    
+
     useEffect(() => {
         checkAuth();
     }, []);
 
     const checkAuth = function () {
-        if(token) {
-           navigate('/home');
+        if (token) {
+            navigate('/home');
         }
     }
 
     const auth = async function (event) {
         event.preventDefault();
+        setLoading(true);
         try {
             const { data } = await api.get(`/user/auth/${userEmail}/${userPassword}`);
             if (data.auth) {
@@ -54,6 +56,7 @@ function Login() {
             console.error(error.response.data);
             alert(error.response.status);
         }
+        setLoading(false);
     }
 
     const register = async function (event) {
@@ -89,13 +92,20 @@ function Login() {
             <section className="form-side">
                 <div className="form">
                     <p className="brand"><span>E</span>nergy <span>F</span>inder</p>
-                    <form className="inputs" onSubmit={e => isRegister ? register(e) : auth(e) }>
+                    <form className="inputs" onSubmit={e => isRegister ? register(e) : auth(e)}>
                         <p>{loginOrRegisterLabel}</p>
                         {isRegister && <input type="text" required placeholder="Nome" onChange={e => setUserName(e.target.value)} />}
                         <input type="email" required placeholder="Email" onChange={e => setUserEmail(e.target.value)} />
                         <input type="password" required placeholder="Senha" onChange={e => setUserPassword(e.target.value)} />
-                        <button type="submit"> {loginOrRegisterBtn} </button>
-                        <p onClick={() => setIsRegister(!isRegister)}>{loginOrRegisterSecondBtn}</p>
+                        {!loading &&
+                            <>
+                                <button type="submit"> {loginOrRegisterBtn} </button>
+                                <p onClick={() => setIsRegister(!isRegister)}>{loginOrRegisterSecondBtn}</p>
+                            </>
+                        }
+                        {loading &&
+                            <div className="loader"></div>
+                        }
                     </form>
                 </div>
             </section>

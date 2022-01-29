@@ -19,6 +19,7 @@ function Home() {
     const [kwh, setKwh] = useState('');
     const [notFoundMsg, setNotFoundMsg] = useState('Nada por enquanto... Faça uma pesquisa!');
     const [welcomeMessage, setWelcomeMessage] = useState('Olá');
+    const [loading, setLoading] = useState(false);
 
     const checkDayPeriod = function () {
         if (hours >= 6 && hours < 12) {
@@ -80,7 +81,8 @@ function Home() {
 
     const getProviders = async function (event) {
         event.preventDefault();
-
+        setProviders([]);
+        setLoading(true);
         try {
             const { data } = await api.get(`/provider/${kwh}`, {
                 headers: {
@@ -100,6 +102,7 @@ function Home() {
                 alertToken();
             }
         }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -122,7 +125,7 @@ function Home() {
                     <p className="search-provider-label"><span>B</span>uscar <span>f</span>ornecedores</p>
                     <p className="kwh-label">Informe a sua demanda mensal de energia (em KwH):</p>
                     <form className="input-search-form" onSubmit={e => getProviders(e)}>
-                        <input type="text" required placeholder="Ex: 3000" onChange={e => setKwh(e.target.value)} />
+                        <input type="number" required placeholder="Ex: 3000" onChange={e => setKwh(e.target.value)} />
                         <button type="submit"><img src={searchIcon} height="25" width="25" /></button>
                     </form>
                     <div className="providers-list">
@@ -149,7 +152,12 @@ function Home() {
                     </div>
                     {providers.length < 1 &&
                         <div className="not-found-providers">
-                            <p>{notFoundMsg}</p>
+                            {loading &&
+                               <div class="loader"></div>
+                            }
+                            {!loading &&
+                                <p>{notFoundMsg}</p>
+                            }
                         </div>
                     }
                 </div>
