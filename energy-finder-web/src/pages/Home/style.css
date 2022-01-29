@@ -173,3 +173,37 @@
     margin-top: 10px;
     font-size: 4ch;
 }
+
+@media (min-width: 1280px) {
+    .home-body .home-container .search-box .providers-list .card {
+        width: 340px;
+    }
+}
+
+@media (min-width: 1366px) {
+    .home-body .home-container .search-box {
+        width: 92%;
+    }
+
+    .home-body .home-container .search-box .providers-list .card {
+        width: 277px;
+    }
+
+    .home-body .home-container .search-box .providers-list .card .name-and-logo-row img {
+        height: 30px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .home-body .home-container .search-box .providers-list .card {
+        width: 330px;
+        height: 190px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .home-body .home-container .search-box .providers-list .card {
+        width: 315px;
+        height: 190px;
+    }
+}

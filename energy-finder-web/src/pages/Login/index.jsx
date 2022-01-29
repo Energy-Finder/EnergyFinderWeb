@@ -5,7 +5,6 @@ import MuiAlert from '@mui/material/Alert';
 import './style.css';
 import '../global.css';
 import api from "../../utils/api";
-import { height } from "@mui/system";
 
 function Login() {
     const navigate = useNavigate();
