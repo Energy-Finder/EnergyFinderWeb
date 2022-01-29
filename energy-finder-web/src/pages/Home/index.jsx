@@ -125,31 +125,28 @@ function Home() {
                         <input type="text" required placeholder="Ex: 3000" onChange={e => setKwh(e.target.value)} />
                         <button type="submit"><img src={searchIcon} height="25" width="25" /></button>
                     </form>
-                    {providers &&
-                        <div className="providers-list">
-                            {providers.map((provider) =>
-                                <div className="card" key={provider.providerId}>
-                                    <div className="name-and-logo-row">
-                                        <p className="provider-name">{provider.providerName} <span>{provider.providerUf}</span></p>
-                                        <img src={provider.providerLogo} alt="" />
-                                    </div>
-                                    <p className="provider-average">
-                                        <b>Limite mínimo de Kwh:</b> {provider.providerKwhLimit}
-                                    </p>
-                                    <p className="provider-average">
-                                        <b>Avaliação média:</b> {provider.providerAverageRating}
-                                    </p>
-                                    <p className="provider-clients">
-                                        <b>Total de clientes:</b> {provider.providerClientsTotal}</p>
-                                    <div className="price-div">
-                                        <h1 className="provider-price">Preço:</h1>
-                                        <p className="provider-price"><b>R$</b> {provider.providerKwhPrice} / <span>Kwh</span></p>
-                                    </div>
+                    <div className="providers-list">
+                        {providers.map((provider) =>
+                            <div className="card" key={provider.providerId}>
+                                <div className="name-and-logo-row">
+                                    <p className="provider-name">{provider.providerName} <span>{provider.providerUf}</span></p>
+                                    <img src={provider.providerLogo} alt="" />
                                 </div>
-                            )}
-                        </div>
-
-                    }
+                                <p className="provider-average">
+                                    <b>Limite mínimo de Kwh:</b> {provider.providerKwhLimit}
+                                </p>
+                                <p className="provider-average">
+                                    <b>Avaliação média:</b> {provider.providerAverageRating}
+                                </p>
+                                <p className="provider-clients">
+                                    <b>Total de clientes:</b> {provider.providerClientsTotal}</p>
+                                <div className="price-div">
+                                    <h1 className="provider-price">Preço:</h1>
+                                    <p className="provider-price"><b>R$</b> {provider.providerKwhPrice} / <span>Kwh</span></p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     {providers.length < 1 &&
                         <div className="not-found-providers">
                             <p>{notFoundMsg}</p>
