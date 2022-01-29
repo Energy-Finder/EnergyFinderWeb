@@ -61,7 +61,7 @@ function Login() {
 
     const register = async function (event) {
         event.preventDefault();
-
+        setLoading(true);
         const userJson = {
             username: userName,
             email: userEmail,
@@ -78,6 +78,7 @@ function Login() {
             console.error(error.response.data);
             alert(error.response.status);
         }
+        setLoading(false);
     }
 
     return (
