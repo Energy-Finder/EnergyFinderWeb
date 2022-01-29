@@ -11,7 +11,7 @@ section .canva-side {
     height: 100vh;
     justify-content: center;
     align-items: center;
-    background-image: url('../../imgs/consumo-de-energia-scaled-1.png');
+    background-image: url('../../imgs/bg-image.png');
     background-size: cover;
     background-repeat: no-repeat;
 }
