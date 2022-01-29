@@ -58,6 +58,10 @@ section .form-side .form .inputs {
     margin-top: -50px;
 }
 
+section .form-side .form .inputs input {
+    height: 55px;
+}
+
 section .form-side .form .inputs p{
     font-size: 5.3ch;
     color: var(--white);

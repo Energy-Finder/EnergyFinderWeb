@@ -84,6 +84,7 @@
 
 .home-body .home-container .search-box .input-search-form input {
     width: 280px;
+    height: 55px;
     margin-bottom: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
