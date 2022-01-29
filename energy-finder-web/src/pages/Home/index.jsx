@@ -3,18 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import searchIcon from '../../imgs/icons/search-solid.png';
 import logoutIcon from '../../imgs/icons/log-out.svg';
 import api from "../../utils/api";
+import Swal from 'sweetalert2'
 import '../global.css';
 import './style.css';
 
 function Home() {
     const navigate = useNavigate();
     const userData = JSON.parse(localStorage.getItem('@dataUser'));
+    const data = new Date();
+    const hours = data.getHours();
 
     const [userName, setUserName] = useState('');
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [providers, setProviders] = useState([]);
     const [kwh, setKwh] = useState('');
-    const [notFoundMsg, setNotFoundMsg] = useState('Nada por enquanto... Faça uma pesquisa!')
+    const [notFoundMsg, setNotFoundMsg] = useState('Nada por enquanto... Faça uma pesquisa!');
+    const [welcomeMessage, setWelcomeMessage] = useState('Olá');
+
+    const checkDayPeriod = function () {
+        if (hours >= 6 && hours < 12) {
+           setWelcomeMessage('Bom dia');
+        } else if (hours >= 12 && hours < 18) {
+            setWelcomeMessage('Boa tarde');
+        } else {
+            setWelcomeMessage('Boa noite');
+        }
+    }
 
     const checkAuth = function () {
         if (!token) {
@@ -30,6 +44,40 @@ function Home() {
         navigate('/');
     }
 
+    const alertLogout = function () {
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: "Ao clicar em sim você realizará logout...",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+            }
+        })
+    }
+
+    const alertToken = function () {
+        Swal.fire({
+            title: 'Sua sessão expirou!',
+            text: "Deseja se autenticar novamente?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+            }
+        })
+    }
+
     const getProviders = async function (event) {
         event.preventDefault();
 
@@ -39,7 +87,7 @@ function Home() {
                     'x-access-token': token
                 }
             });
-        
+
             if (data.data.length > 0) {
                 setProviders(data.data);
             } else {
@@ -49,13 +97,14 @@ function Home() {
         } catch (error) {
             console.error(error);
             if (error.response.status == 401) {
-                alert('Sua sessão expirou. Realize login de novo');
+                alertToken();
             }
         }
     }
 
     useEffect(() => {
         checkAuth();
+        checkDayPeriod();
     }, []);
 
     return (
@@ -63,8 +112,8 @@ function Home() {
             <header>
                 <p className="brand"><span>E</span>nergy <span>F</span>inder</p>
                 <div className="username-div">
-                    <p className="username-label">Olá {userName}!</p>
-                    <img src={logoutIcon} onClick={() => logout()} />
+                    <p className="username-label">{welcomeMessage}, {userName}</p>
+                    <img src={logoutIcon} onClick={() => alertLogout()} />
                 </div>
             </header>
 
@@ -97,9 +146,9 @@ function Home() {
                             </div>
                         )}
                     {providers.length < 1 &&
-                       <div className="not-found-providers">
-                           <p>{notFoundMsg}</p>
-                       </div>
+                        <div className="not-found-providers">
+                            <p>{notFoundMsg}</p>
+                        </div>
                     }
                 </div>
             </section>
