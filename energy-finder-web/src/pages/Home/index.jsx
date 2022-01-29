@@ -22,7 +22,7 @@ function Home() {
 
     const checkDayPeriod = function () {
         if (hours >= 6 && hours < 12) {
-           setWelcomeMessage('Bom dia');
+            setWelcomeMessage('Bom dia');
         } else if (hours >= 12 && hours < 18) {
             setWelcomeMessage('Boa tarde');
         } else {
@@ -126,10 +126,13 @@ function Home() {
                         <button type="submit"><img src={searchIcon} height="25" width="25" /></button>
                     </form>
                     {providers &&
-                        providers.map((provider) =>
-                            <div className="providers-list">
+                        <div className="providers-list">
+                            {providers.map((provider) =>
                                 <div className="card" key={provider.providerId}>
-                                    <p className="provider-name">{provider.providerName} <span>{provider.providerUf}</span></p>
+                                    <div className="name-and-logo-row">
+                                        <p className="provider-name">{provider.providerName} <span>{provider.providerUf}</span></p>
+                                        <img src={provider.providerLogo} alt="" />
+                                    </div>
                                     <p className="provider-average">
                                         <b>Limite mínimo de Kwh:</b> {provider.providerKwhLimit}
                                     </p>
@@ -143,8 +146,10 @@ function Home() {
                                         <p className="provider-price"><b>R$</b> {provider.providerKwhPrice} / <span>Kwh</span></p>
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
+
+                    }
                     {providers.length < 1 &&
                         <div className="not-found-providers">
                             <p>{notFoundMsg}</p>

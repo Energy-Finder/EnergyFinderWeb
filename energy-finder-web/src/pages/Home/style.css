@@ -136,13 +136,21 @@
     animation: fade-in 0.5s;
 }
 
-.home-body .home-container .search-box .providers-list .card .provider-name {
+.home-body .home-container .search-box .providers-list .card .name-and-logo-row img {
+    height: 40px;
+}
+
+.home-body .home-container .search-box .providers-list .card .name-and-logo-row .provider-name {
+    width: 200px;
     font-size: 5.5ch;
     font-weight: 600;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.home-body .home-container .search-box .providers-list .card .provider-name span {
+.home-body .home-container .search-box .providers-list .card .name-and-logo-row .provider-name span {
     font-size: 1ch;
     font-weight: normal;
 }
@@ -152,7 +160,8 @@
     font-size: 3.5ch;
 }
 
-.home-body .home-container .search-box .providers-list .card .price-div {
+.home-body .home-container .search-box .providers-list .card .price-div, 
+.home-body .home-container .search-box .providers-list .card .name-and-logo-row {
     display: flex;
     width: 90%;
     flex-direction: row;
