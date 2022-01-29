@@ -76,37 +76,49 @@
     font-size: 3.8ch;
 }
 
-.home-body .home-container .search-box .input-search-row {
+.home-body .home-container .search-box .input-search-form {
     display: flex;
     flex-direction: row;
     margin-top: 15px;
 }
 
-.home-body .home-container .search-box .input-search-row input {
+.home-body .home-container .search-box .input-search-form input {
     width: 280px;
     margin-bottom: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
 }
 
-.home-body .home-container .search-box .input-search-row button {
+.home-body .home-container .search-box .input-search-form button {
     width: 60px;
     margin-bottom: 0px;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
 }
 
-.home-body .home-container .search-box .input-search-row button:hover {
+.home-body .home-container .search-box .input-search-form button:hover {
     background-color: var(--secondary-orange);
 }
 
-.home-body .home-container .search-box .providers-list {
+.home-body .home-container .search-box .providers-list,
+.home-body .home-container .search-box .not-found-providers {
     display: flex;
     width: 100%;
     height: 100%;
     margin-top: 5px;
     flex-wrap: wrap;
     overflow-x: auto;
+}
+
+.home-body .home-container .search-box .not-found-providers {
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    animation: fade-in 0.5s;
+}
+
+.home-body .home-container .search-box .not-found-providers p {
+    font-size: 5.3ch;
 }
 
 .home-body .home-container .search-box .providers-list .card {
@@ -121,6 +133,7 @@
     box-sizing: border-box;
     background-color: var(--white);
     color: var(--gray);
+    animation: fade-in 0.5s;
 }
 
 .home-body .home-container .search-box .providers-list .card .provider-name {

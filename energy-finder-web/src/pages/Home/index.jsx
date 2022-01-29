@@ -2,19 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../../imgs/icons/search-solid.png';
 import logoutIcon from '../../imgs/icons/log-out.svg';
+import api from "../../utils/api";
 import '../global.css';
 import './style.css';
 
 function Home() {
     const navigate = useNavigate();
-    const userData = JSON.parse(localStorage.getItem('@dataUser')); 
+    const userData = JSON.parse(localStorage.getItem('@dataUser'));
 
     const [userName, setUserName] = useState('');
     const [token, setToken] = useState(localStorage.getItem('token'));
+    const [providers, setProviders] = useState([]);
+    const [kwh, setKwh] = useState('');
+    const [notFoundMsg, setNotFoundMsg] = useState('Nada por enquanto... Faça uma pesquisa!')
 
     const checkAuth = function () {
-        if(!token) {
-           logout();
+        if (!token) {
+            logout();
         } else {
             setUserName(userData.userName);
         }
@@ -24,6 +28,30 @@ function Home() {
         localStorage.removeItem('@dataUser');
         localStorage.removeItem('token');
         navigate('/');
+    }
+
+    const getProviders = async function (event) {
+        event.preventDefault();
+
+        try {
+            const { data } = await api.get(`/provider/${kwh}`, {
+                headers: {
+                    'x-access-token': token
+                }
+            });
+        
+            if (data.data.length > 0) {
+                setProviders(data.data);
+            } else {
+                setProviders([]);
+                setNotFoundMsg('Nenhum fornecedor encontrado para a sua demanda :(');
+            }
+        } catch (error) {
+            console.error(error);
+            if (error.response.status == 401) {
+                alert('Sua sessão expirou. Realize login de novo');
+            }
+        }
     }
 
     useEffect(() => {
@@ -43,28 +71,36 @@ function Home() {
             <section className="home-container">
                 <div className="search-box">
                     <p className="search-provider-label"><span>B</span>uscar <span>f</span>ornecedores</p>
-                    <p className="kwh-label">Informe a quantidade de KwH</p>
-                    <div className="input-search-row">
-                        <input type="text" placeholder="Ex: 3000" />
-                        <button><img src={searchIcon} height="25" width="25" /></button>
-                    </div>
-                    <div className="providers-list">
-                        <div className="card">
-                            <p className="provider-name">Enel <span>SP</span></p>
-                            <p className="provider-average">
-                                <b>Limite mínimo de Kwh:</b> 300 kwh
-                            </p>
-                            <p className="provider-average">
-                                <b>Avaliação média:</b> 5.0
-                            </p>
-                            <p className="provider-clients">
-                                <b>Total de clientes:</b> 50</p>
-                            <div className="price-div">
-                                <h1 className="provider-price">Preço:</h1>
-                                <p className="provider-price"><b>R$</b> 200,00 / <span>Kwh</span></p>
+                    <p className="kwh-label">Informe a sua demanda mensal de energia (em KwH):</p>
+                    <form className="input-search-form" onSubmit={e => getProviders(e)}>
+                        <input type="text" required placeholder="Ex: 3000" onChange={e => setKwh(e.target.value)} />
+                        <button type="submit"><img src={searchIcon} height="25" width="25" /></button>
+                    </form>
+                    {providers &&
+                        providers.map((provider) =>
+                            <div className="providers-list">
+                                <div className="card" key={provider.providerId}>
+                                    <p className="provider-name">{provider.providerName} <span>{provider.providerUf}</span></p>
+                                    <p className="provider-average">
+                                        <b>Limite mínimo de Kwh:</b> {provider.providerKwhLimit}
+                                    </p>
+                                    <p className="provider-average">
+                                        <b>Avaliação média:</b> {provider.providerAverageRating}
+                                    </p>
+                                    <p className="provider-clients">
+                                        <b>Total de clientes:</b> {provider.providerClientsTotal}</p>
+                                    <div className="price-div">
+                                        <h1 className="provider-price">Preço:</h1>
+                                        <p className="provider-price"><b>R$</b> {provider.providerKwhPrice} / <span>Kwh</span></p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        )}
+                    {providers.length < 1 &&
+                       <div className="not-found-providers">
+                           <p>{notFoundMsg}</p>
+                       </div>
+                    }
                 </div>
             </section>
         </section>
