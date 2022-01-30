@@ -101,7 +101,18 @@
     background-color: var(--secondary-orange);
 }
 
-.home-body .home-container .search-box .providers-list,
+.home-body .home-container .search-box .providers-list {
+    display: grid;
+    width: 100%;
+    height: max-content;
+    margin-top: 10px;
+    column-count: 4;
+    column-gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .home-body .home-container .search-box .not-found-providers {
     display: flex;
     width: 100%;
@@ -124,7 +135,7 @@
 
 .home-body .home-container .search-box .providers-list .card {
     display: flex;
-    width: 350px;
+    width: 95%;
     height: 180px;
     margin: 25px 25px 25px 0px;
     padding: 20px 0px 20px 25px;
@@ -172,38 +183,4 @@
 .home-body .home-container .search-box .providers-list .card .provider-price {
     margin-top: 10px;
     font-size: 4ch;
-}
-
-@media (min-width: 1280px) {
-    .home-body .home-container .search-box .providers-list .card {
-        width: 340px;
-    }
-}
-
-@media (min-width: 1366px) {
-    .home-body .home-container .search-box {
-        width: 92%;
-    }
-
-    .home-body .home-container .search-box .providers-list .card {
-        width: 277px;
-    }
-
-    .home-body .home-container .search-box .providers-list .card .name-and-logo-row img {
-        height: 30px;
-    }
-}
-
-@media (min-width: 1600px) {
-    .home-body .home-container .search-box .providers-list .card {
-        width: 330px;
-        height: 190px;
-    }
-}
-
-@media (min-width: 1920px) {
-    .home-body .home-container .search-box .providers-list .card {
-        width: 315px;
-        height: 190px;
-    }
 }
