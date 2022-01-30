@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import searchIcon from '../../imgs/icons/search-solid.png';
-import logoutIcon from '../../imgs/icons/log-out.svg';
 import api from "../../utils/api";
 import Swal from 'sweetalert2'
-import '../global.css';
+import searchIcon from '../../imgs/icons/search-solid.png';
+import logoutIcon from '../../imgs/icons/log-out.svg';
 import './style.css';
+import '../global.css';
 
 function Home() {
     const navigate = useNavigate();
@@ -20,6 +20,32 @@ function Home() {
     const [notFoundMsg, setNotFoundMsg] = useState('Nada por enquanto... Faça uma pesquisa!');
     const [welcomeMessage, setWelcomeMessage] = useState('Olá');
     const [loading, setLoading] = useState(false);
+
+    const alert = function (type) {
+        let title = 'Você tem certeza?';
+        let text = 'Ao clicar em sim você realizará logout...';
+        let icon = 'question';
+
+        if(type == 'token') {
+            title = 'Sua sessão expirou!';
+            text = 'Deseja se autenticar novamente?';
+            icon = 'warning'
+        }
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+            }
+        })
+    }
 
     const checkDayPeriod = function () {
         if (hours >= 6 && hours < 12) {
@@ -39,50 +65,10 @@ function Home() {
         }
     }
 
-    const logout = function () {
-        localStorage.removeItem('@dataUser');
-        localStorage.removeItem('token');
-        navigate('/');
-    }
-
-    const alertLogout = function () {
-        Swal.fire({
-            title: 'Você tem certeza?',
-            text: "Ao clicar em sim você realizará logout...",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                logout();
-            }
-        })
-    }
-
-    const alertToken = function () {
-        Swal.fire({
-            title: 'Sua sessão expirou!',
-            text: "Deseja se autenticar novamente?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                logout();
-            }
-        })
-    }
-
     const getProviders = async function (event) {
         event.preventDefault();
-        setProviders([]);
         setLoading(true);
+        setProviders([]);
         try {
             const { data } = await api.get(`/provider/${kwh}`, {
                 headers: {
@@ -99,10 +85,17 @@ function Home() {
         } catch (error) {
             console.error(error);
             if (error.response.status == 401) {
-                alertToken();
+                alert('token');
             }
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
+    }
+
+    const logout = function () {
+        localStorage.removeItem('@dataUser');
+        localStorage.removeItem('token');
+        navigate('/');
     }
 
     useEffect(() => {
@@ -116,14 +109,13 @@ function Home() {
                 <p className="brand"><span>E</span>nergy <span>F</span>inder</p>
                 <div className="username-div">
                     <p className="username-label">{welcomeMessage}, {userName}</p>
-                    <img src={logoutIcon} onClick={() => alertLogout()} />
+                    <img src={logoutIcon} onClick={() => alert('logout')} />
                 </div>
             </header>
-
             <section className="home-container">
                 <div className="search-box">
                     <p className="search-provider-label"><span>B</span>uscar <span>f</span>ornecedores</p>
-                    <p className="kwh-label">Informe a sua demanda mensal de energia (em KwH):</p>
+                    <p className="kwh-label">Informe a sua demanda mensal de energia (em kWh):</p>
                     <form className="input-search-form" onSubmit={e => getProviders(e)}>
                         <input type="number" required placeholder="Ex: 3000" onChange={e => setKwh(e.target.value)} />
                         <button type="submit"><img src={searchIcon} height="25" width="25" /></button>
@@ -136,7 +128,7 @@ function Home() {
                                     <img src={provider.providerLogo} alt="" />
                                 </div>
                                 <p className="provider-average">
-                                    <b>Limite mínimo de Kwh:</b> {provider.providerKwhLimit}
+                                    <b>Limite mínimo de kWh:</b> {provider.providerKwhLimit}
                                 </p>
                                 <p className="provider-average">
                                     <b>Avaliação média:</b> {provider.providerAverageRating}
@@ -152,12 +144,8 @@ function Home() {
                     </div>
                     {providers.length < 1 &&
                         <div className="not-found-providers">
-                            {loading &&
-                               <div class="loader"></div>
-                            }
-                            {!loading &&
-                                <p>{notFoundMsg}</p>
-                            }
+                            {loading && <div class="loader"></div>}
+                            {!loading && <p>{notFoundMsg}</p>}
                         </div>
                     }
                 </div>
